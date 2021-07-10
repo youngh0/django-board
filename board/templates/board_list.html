@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if board_list %}
+    {% for board_info in board_list %}
+        <div class="container card border-light mb-3 mt-3"
+             style="max-width: 40%; text-align:center;margin-top:20">
+          <div class="card-header">
+              <div style="display:flex; justify-content:space-between" >
+                  <h5>{{board_info.board_name}}</h5>
+                  <a href="#" style="text-decoration: none;">> </a>
+              </div>
+
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{board_info.description}}</p>
+          </div>
+
+        </div>
+    {% endfor %}
+    {% else %}
+    <p>no</p>
+    {% endif %}
+<div class="container mb-3">
+    <a class="btn btn-primary " href="{% url 'board:board_create' %}" role="button">게시판 생성하기</a>
+</div>
+{% endblock %}
