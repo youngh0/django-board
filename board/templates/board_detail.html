@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% if content_list %}
+    <p>{{content_list.title}}</p>
+    {% for content in content_list %}
+    <div class="card">
+      <div class="card-header">
+        {{content.title}}
+      </div>
+      <div class="card-body">
+
+        <p class="card-text">{{content.content}}</p>
+          <div style="display:flex">
+              <span style="font-size:14px">{{content.date}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong style="font-size:14px">{{content.author}}</strong>
+          </div>
+
+      </div>
+    </div>
+    {% if forloop.last %}
+    <a class="btn btn-primary" href="{% url 'board:content_create' content.board_id_id %}" role="button" style="margin-top:16px">게시글 작성하기</a>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <p>아직 작성된 글이 없급니다,</p>
+    {% endif %}
+
+
+</div>
+{% endblock %}

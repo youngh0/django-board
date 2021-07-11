@@ -1,6 +1,6 @@
 from django import forms
 
-from board.models import BoardList
+from board.models import BoardList, BoardContent
 
 
 class BoardCreationForm(forms.ModelForm):
@@ -15,3 +15,9 @@ class BoardCreationForm(forms.ModelForm):
             'board_name' : forms.TextInput(attrs={'class': 'form-control'}),
             'description' : forms.Textarea(attrs={'class': 'form-control', 'rows': 10})
         }
+
+
+class ContentCreationForm(forms.ModelForm):
+    class Meta:
+        model = BoardContent
+        fields = ['title','content']
