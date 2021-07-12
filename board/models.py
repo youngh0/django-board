@@ -12,7 +12,7 @@ class BoardList(models.Model):
         # return self.id
 
 class BoardContent(models.Model):
-    board_id = models.ForeignKey(BoardList, on_delete=models.CASCADE, related_name='board_content')
+    board_id = models.ForeignKey(BoardList, on_delete=models.CASCADE, verbose_name="글", db_column='board_id')
     title = models.CharField(max_length=20, null=False)
     content = models.CharField(max_length=300, null=False)
     author = models.CharField(max_length=20, null=False)
