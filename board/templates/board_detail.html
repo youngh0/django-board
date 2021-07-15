@@ -5,9 +5,15 @@
     {% if content_list %}
     <p>{{content_list.title}}</p>
     {% for content in content_list %}
-    <div class="card">
-      <div class="card-header">
-        {{content.title}}
+    <div class="card " style="width:60%; margin:0 auto">
+      <div class="card-header ">
+        <div style="display:flex;justify-content : space-between">
+            <span>{{content.title}}</span>
+            {% if request.user.nickname == content.author %}
+            <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %}" role="button">X</a>
+            {%endif%}
+        </div>
+
       </div>
       <div class="card-body">
 
@@ -20,12 +26,12 @@
       </div>
     </div>
     {% if forloop.last %}
-    <a class="btn btn-primary" href="{% url 'board:content_create' content.board_id_id %}" role="button" style="margin-top:16px">게시글 작성하기</a>
+    <a class="btn btn-primary" href="{% url 'board:content_create' board_id %}" role="button" style="margin-top:16px">게시글 작성하기</a>
     {% endif %}
     {% endfor %}
     {% else %}
     <p>아직 작성된 글이 없급니다,</p>
-    <a class="btn btn-primary" href="{% url 'board:content_create' content.board_id_id %}" role="button" style="margin-top:16px">게시글 작성하기</a>
+    <a class="btn btn-primary" href="{% url 'board:content_create' board_id %}" role="button" style="margin-top:16px">게시글 작성하기</a>
     {% endif %}
 
 

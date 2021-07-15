@@ -34,18 +34,24 @@ def board_create(request):
         form = BoardCreationForm()
     return render(request, 'board_create.html', {'form': form})
 
+
 # need to implement paging
 def detail(request, board_id):
-    print(board_id)
-    bid = get_object_or_404(BoardList, pk=board_id)
-    print(bid)
-    content_list = bid.boardcontent_set.filter(board_id=board_id)
-    print(content_list)
+    # print(board_id)
+    # bid = get_object_or_404(BoardList, pk=board_id)
+    # print(bid)
+    # content_list = bid.boardcontent_set.filter(board_id=board_id)
+    # print(content_list)
+    # context = {
+    #     'content_list': content_list,
+    #     'board_id': board_id
+    # }
+    content_list = BoardContent.objects.filter(board_id=board_id)
     context = {
         'content_list': content_list,
-        'board_id' : board_id
+        'board_id': board_id
     }
-    return render(request,'board_detail.html', context)
+    return render(request, 'board_detail.html', context)
 
 
 # need to check valid
@@ -62,6 +68,12 @@ def content_create(request, board_id):
             board_content.board_id_id = a.id
             board_content.save()
             print('gfd', board_content)
-            return redirect('board:detail',board_id)
+            return redirect('board:detail', board_id)
         # content_info =
-    return render(request, 'board_content_create.html',{'a':a})
+    return render(request, 'board_content_create.html', {'a': a})
+
+
+def content_delete(request, content_id):
+    delete_content = BoardContent.objects.get(id=content_id)
+    delete_content.delete()
+    return redirect('board:index')
