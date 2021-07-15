@@ -57,7 +57,7 @@ def detail(request, board_id):
 # need to check valid
 def content_create(request, board_id):
     print(request.user.nickname)
-    a = BoardList.objects.get(id=board_id)
+    bid = BoardList.objects.get(id=board_id)
 
     if request.method == 'POST':
         form = ContentCreationForm(request.POST)
@@ -65,15 +65,32 @@ def content_create(request, board_id):
         if form.is_valid():
             board_content = form.save(commit=False)
             board_content.author = request.user.nickname
-            board_content.board_id_id = a.id
+            board_content.board_id_id = bid.id
             board_content.save()
             print('gfd', board_content)
             return redirect('board:detail', board_id)
         # content_info =
-    return render(request, 'board_content_create.html', {'a': a})
+    return render(request, 'board_content_create.html', {'bid': bid})
 
 
 def content_delete(request, content_id):
     delete_content = BoardContent.objects.get(id=content_id)
     delete_content.delete()
     return redirect('board:index')
+
+
+def content_update(request, content_id):
+    base_content = BoardContent.objects.get(id=content_id)
+    bid = base_content.board_id_id
+    if request.method == 'POST':
+        update_form = ContentCreationForm(request.POST)
+        if update_form.is_valid():
+            base_content.title = request.POST['title']
+            base_content.content = request.POST['content']
+            base_content.save()
+            return redirect('board:detail', base_content.board_id_id)
+    context = {
+        'content': base_content
+    }
+
+    return render(request, 'board_content_update.html', context)
