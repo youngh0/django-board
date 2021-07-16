@@ -30,3 +30,19 @@ def delete(request, comment_id):
     content_id = delete_comment.content_id
     delete_comment.delete()
     return redirect('board:content_detail', content_id)
+
+def update(request, comment_id):
+    comment_info = Comments.objects.get(id=comment_id)
+    if request.method == "POST":
+        update_form = CommentCreationForm(request.POST)
+        if update_form.is_valid():
+            content_id = comment_info.content_id
+
+            comment_info.body = request.POST['body']
+            comment_info.save()
+            return redirect('board:content_detail', content_id)
+    context = {
+        'comment_id' : comment_id,
+        'body':comment_info.body
+    }
+    return render(request,'comment_update.html',context)

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="{% url 'comments:update' comment_id %}" method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">내용</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="body" placeholder="내용">{{body}}</textarea>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

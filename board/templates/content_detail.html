@@ -38,7 +38,7 @@
             {% if request.user.nickname == comment.author %}
             <div>
                 <a class="btn btn-danger btn-sm" href="{% url 'comments:delete' comment.id %}" role="button">X</a>
-
+                <a class="btn btn-primary btn-sm" href="{% url 'comments:update' comment.id %}" role="button">O</a>
             </div>
 
             {%endif%}
@@ -56,7 +56,7 @@
     </div>
     {% endfor %}
     {% else %}
-    <p>nono</p>
+    <p>등록된 댓글이 없습니다.</p>
     {% endif %}
      {% if user.is_authenticated %}
     <form method="post" action="{% url 'comments:create' content.id %}" style="margin:20px auto;">
