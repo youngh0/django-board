@@ -9,7 +9,7 @@
             <span>{{content.title}}</span>
             {% if request.user.nickname == content.author %}
             <div>
-                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %}" role="button">X</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %} " onclick="return confirm('정말 삭제하시겠습니까?')">X</a>
                 <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">O</a>
             </div>
 
@@ -37,7 +37,7 @@
             <span>{{comment.author}}</span>
             {% if request.user.nickname == comment.author %}
             <div>
-                <a class="btn btn-danger btn-sm" href="{% url 'comments:delete' comment.id %}" role="button">X</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'comments:delete' comment.id %}" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">X</a>
                 <a class="btn btn-primary btn-sm" href="{% url 'comments:update' comment.id %}" role="button">O</a>
             </div>
 

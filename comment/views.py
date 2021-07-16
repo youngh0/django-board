@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from comment.forms import CommentCreationForm
 from comment.models import Comments
+from django.contrib import messages
 
 
 def create(request, content_id):
@@ -12,7 +13,11 @@ def create(request, content_id):
         print('this is post')
         comment_form = CommentCreationForm(request.POST)
         if comment_form.is_valid():
-
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                '성공적으로 회원가입 완료'
+            )
             comment_info = comment_form.save(commit=False)
             comment_info.author = request.user.nickname
             comment_info.content_id = content_id
