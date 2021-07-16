@@ -13,4 +13,5 @@ urlpatterns = [
     path('update/<int:content_id>/', views.content_update, name="update"),
     path('content/create/<int:board_id>/', views.content_create, name="content_create"),
     path('create/', views.board_create, name = 'board_create'),
+    path('content/<int:content_id>', views.content_detail, name = 'content_detail'),
 ]

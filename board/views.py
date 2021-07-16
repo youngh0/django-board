@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from board.forms import BoardCreationForm, ContentCreationForm
 from board.models import BoardList, BoardContent
+from comment.models import Comments
 
 
 def index(request):
@@ -61,13 +62,13 @@ def content_create(request, board_id):
 
     if request.method == 'POST':
         form = ContentCreationForm(request.POST)
-        print(form)
+
         if form.is_valid():
             board_content = form.save(commit=False)
             board_content.author = request.user.nickname
             board_content.board_id_id = bid.id
             board_content.save()
-            print('gfd', board_content)
+
             return redirect('board:detail', board_id)
         # content_info =
     return render(request, 'board_content_create.html', {'bid': bid})
@@ -94,3 +95,13 @@ def content_update(request, content_id):
     }
 
     return render(request, 'board_content_update.html', context)
+
+
+def content_detail(request,content_id):
+    content = BoardContent.objects.get(id=content_id)
+    comment = Comments.objects.filter(content_id = content_id)
+    context = {
+        'content':content,
+        'comment':comment
+    }
+    return render(request, 'content_detail.html', context)

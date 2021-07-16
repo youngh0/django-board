@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container" style="width:40%">
+    <div class="card " style=" margin:0 auto">
+      <div class="card-header ">
+        <div style="display:flex;justify-content : space-between">
+            <span>{{content.title}}</span>
+            {% if request.user.nickname == content.author %}
+            <div>
+                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %}" role="button">X</a>
+                <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">O</a>
+            </div>
+
+            {%endif%}
+        </div>
+
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{content.content}}</p>
+          <div style="display:flex">
+              <span style="font-size:14px">{{content.date}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong style="font-size:14px">{{content.author}}</strong>
+          </div>
+
+      </div>
+    </div>
+
+    {% if comment %}
+    <p style="margin-top: 20px">댓글</p>
+    {% for comment in comment %}
+
+    <div class="card " style=" margin:0 auto">
+      <div class="card-header ">
+        <div style="display:flex;justify-content : space-between">
+            <span>{{comment.author}}</span>
+            {% if request.user.nickname == comment.author %}
+            <div>
+                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %}" role="button">X</a>
+                <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">O</a>
+            </div>
+
+            {%endif%}
+        </div>
+
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{comment.body}}</p>
+          <div style="display:flex">
+              <span style="font-size:14px">{{comment.date}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong style="font-size:14px">{{comment.author}}</strong>
+          </div>
+
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>nono</p>
+    {% endif %}
+     {% if user.is_authenticated %}
+    <form method="post" action="{% url 'comments:create' content.id %}" style="margin:20px auto;">
+        {% csrf_token %}
+        <span>댓글 달기</span>
+        <textarea class="form-control" name="body"
+                      rows="5" ></textarea>
+        <button type="submit" class="btn btn-primary mb-3" style="margin-top:16px">댓글 작성하기</button>
+    </form>
+    {%endif %}
+
+
+
+</div>
+{% endblock %}

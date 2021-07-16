@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
     path('board/', include('board.urls')),
-    path('accounts/',include('accounts.urls'))
+    path('accounts/',include('accounts.urls')),
+    path('comments/',include('comment.urls')),
 ]
