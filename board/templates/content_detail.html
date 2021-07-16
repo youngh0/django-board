@@ -37,8 +37,8 @@
             <span>{{comment.author}}</span>
             {% if request.user.nickname == comment.author %}
             <div>
-                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %}" role="button">X</a>
-                <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">O</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'comments:delete' comment.id %}" role="button">X</a>
+
             </div>
 
             {%endif%}
