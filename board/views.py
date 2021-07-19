@@ -1,10 +1,13 @@
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 from board.forms import BoardCreationForm, ContentCreationForm, CommentCreationForm
 from board.models import BoardList, Content, Comments
+from board.serializers import BoardListSerializer
 
 
 def index(request):
@@ -40,7 +43,6 @@ def detail(request, board_id):
 
     board_info = BoardList.objects.get(id=board_id)
 
-    test = Content.objects.get(id=1)
 
     context = {
         'content_list': content_list,
@@ -93,7 +95,7 @@ def content_update(request, content_id):
 
 
 def content_detail(request,content_id):
-    content = Content.objects.get(id=content_id)
+    content = get_object_or_404(Content,pk=content_id)
     comment = Comments.objects.filter(content_id = content_id)
     context = {
         'content':content,
@@ -121,7 +123,7 @@ def comment_create(request, content_id):
     return redirect('board:content_detail', content_id)
 
 def comment_update(request, comment_id):
-    comment_info = Comments.objects.get(id=comment_id)
+    comment_info = get_object_or_404(Comments, pk=comment_id)
     if request.method == "POST":
         update_form = CommentCreationForm(request.POST)
         if update_form.is_valid():
@@ -141,3 +143,17 @@ def comment_delete(request, comment_id):
     content_id = delete_comment.content_id
     delete_comment.delete()
     return redirect('board:content_detail', content_id)
+
+@api_view(['GET','POST'])
+def api_board_list(request):
+    if request.method == 'GET':
+        query_set = BoardList.objects.all()
+        board_list = BoardListSerializer(query_set, many=True) # json형태로 변환
+        return Response(board_list.data)
+
+    if request.method == 'POST':
+        serializer = BoardListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

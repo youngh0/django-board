@@ -9,8 +9,12 @@
             <span>{{content.title}}</span>
             {% if request.user.nickname == content.author %}
             <div>
-                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %} " onclick="return confirm('정말 삭제하시겠습니까?')">X</a>
-                <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">O</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'board:delete' content.id %} " onclick="return confirm('정말 삭제하시겠습니까?')">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+                <a class="btn btn-primary btn-sm" href="{% url 'board:update' content.id %}" role="button">
+                    <i class="fas fa-pen"></i>
+                </a>
             </div>
 
             {%endif%}
@@ -37,8 +41,12 @@
             <span>{{comment.author}}</span>
             {% if request.user.nickname == comment.author %}
             <div>
-                <a class="btn btn-danger btn-sm" href="{% url 'board:comment_delete' comment.id %}" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">X</a>
-                <a class="btn btn-primary btn-sm" href="{% url 'board:comment_update' comment.id %}" role="button">O</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'board:comment_delete' comment.id %}" role="button" onclick="return confirm('정말 삭제하시겠습니까?')">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+                <a class="btn btn-primary btn-sm" href="{% url 'board:comment_update' comment.id %}" role="button">
+                    <i class="fas fa-pen"></i>
+                </a>
             </div>
 
             {%endif%}
