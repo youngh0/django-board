@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <form action="{% url 'comments:update' comment_id %}" method="post">
+    <form action="{% url 'board:comment_update' comment_id %}" method="post">
         {% csrf_token %}
 
         <div class="mb-3">

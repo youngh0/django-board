@@ -1,6 +1,6 @@
 from django import forms
 
-from board.models import BoardList, BoardContent
+from board.models import BoardList, Content, Comments
 
 
 class BoardCreationForm(forms.ModelForm):
@@ -19,5 +19,10 @@ class BoardCreationForm(forms.ModelForm):
 
 class ContentCreationForm(forms.ModelForm):
     class Meta:
-        model = BoardContent
+        model = Content
         fields = ['title','content']
+
+class CommentCreationForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['body']

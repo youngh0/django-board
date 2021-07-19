@@ -1,7 +1,7 @@
 from django import forms
 
 from accounts.models import User
-from board.models import BoardList, BoardContent
+from board.models import BoardList, Content
 
 
 class SignUpForm(forms.ModelForm):

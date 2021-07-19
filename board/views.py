@@ -3,9 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from board.forms import BoardCreationForm, ContentCreationForm
-from board.models import BoardList, BoardContent
-from comment.models import Comments
+from board.forms import BoardCreationForm, ContentCreationForm, CommentCreationForm
+from board.models import BoardList, Content, Comments
 
 
 def index(request):
@@ -21,10 +20,8 @@ def index(request):
 
 def board_create(request):
     if request.method == 'POST':
-        print('z')
         form = BoardCreationForm(request.POST)
         if form.is_valid():
-            print('n')
             board_info = form.save(commit=False)
             board_info.user_name = request.user.nickname
             board_info.save()
@@ -38,19 +35,17 @@ def board_create(request):
 
 # need to implement paging
 def detail(request, board_id):
-    # print(board_id)
-    # bid = get_object_or_404(BoardList, pk=board_id)
-    # print(bid)
-    # content_list = bid.boardcontent_set.filter(board_id=board_id)
-    # print(content_list)
-    # context = {
-    #     'content_list': content_list,
-    #     'board_id': board_id
-    # }
-    content_list = BoardContent.objects.filter(board_id=board_id)
+
+    content_list = Content.objects.filter(board_id=board_id)
+
+    board_info = BoardList.objects.get(id=board_id)
+
+    test = Content.objects.get(id=1)
+
     context = {
         'content_list': content_list,
-        'board_id': board_id
+        'board_id': board_id,
+        'board_info':board_info
     }
     return render(request, 'board_detail.html', context)
 
@@ -75,13 +70,13 @@ def content_create(request, board_id):
 
 
 def content_delete(request, content_id):
-    delete_content = BoardContent.objects.get(id=content_id)
+    delete_content = Content.objects.get(id=content_id)
     delete_content.delete()
     return redirect('board:index')
 
 
 def content_update(request, content_id):
-    base_content = BoardContent.objects.get(id=content_id)
+    base_content = Content.objects.get(id=content_id)
     bid = base_content.board_id_id
     if request.method == 'POST':
         update_form = ContentCreationForm(request.POST)
@@ -98,10 +93,51 @@ def content_update(request, content_id):
 
 
 def content_detail(request,content_id):
-    content = BoardContent.objects.get(id=content_id)
+    content = Content.objects.get(id=content_id)
     comment = Comments.objects.filter(content_id = content_id)
     context = {
         'content':content,
         'comment':comment
     }
     return render(request, 'content_detail.html', context)
+
+
+def comment_create(request, content_id):
+    if request.method == 'POST':
+        print('this is post')
+        comment_form = CommentCreationForm(request.POST)
+        if comment_form.is_valid():
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                '성공적으로 회원가입 완료'
+            )
+            comment_info = comment_form.save(commit=False)
+            comment_info.author = request.user.nickname
+            comment_info.content_id = content_id
+            comment_info.save()
+        return redirect('board:content_detail', content_id)
+
+    return redirect('board:content_detail', content_id)
+
+def comment_update(request, comment_id):
+    comment_info = Comments.objects.get(id=comment_id)
+    if request.method == "POST":
+        update_form = CommentCreationForm(request.POST)
+        if update_form.is_valid():
+            content_id = comment_info.content_id
+
+            comment_info.body = request.POST['body']
+            comment_info.save()
+            return redirect('board:content_detail', content_id)
+    context = {
+        'comment_id': comment_id,
+        'body': comment_info.body
+    }
+    return render(request, 'comment_update.html', context)
+
+def comment_delete(request, comment_id):
+    delete_comment = Comments.objects.get(id=comment_id)
+    content_id = delete_comment.content_id
+    delete_comment.delete()
+    return redirect('board:content_detail', content_id)
