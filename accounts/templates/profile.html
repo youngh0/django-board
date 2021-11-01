@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>{{uid}}</p>
 <div class="container mt-12">
     <h5 class="my-3 border-bottom pb-2">회원 정보</h5>
 
@@ -17,7 +16,6 @@
           <div class="fw-bold">nickname</div>
           {{request.user.nickname}}
         </div>
-        <span class="badge bg-primary rounded-pill">14</span>
       </li>
     </ul>
     <div style="margin-top: 12px">
